@@ -34,7 +34,25 @@ commands:
             #  Add revert code here. You can find this in the Getting Started section.
               exit 1
             fi
-
+ aws_cli_install:
+    steps:
+      - run:
+          name: Install aws-cli
+          command: |
+            sudo apt install curl
+            sudo apt install unzip
+            curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+            unzip awscliv2.zip
+            sudo ./aws/install
+  aws_configure_credential:
+    steps:
+      - run:
+          name: Create Credential Configuration AWS
+          command: |
+            aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
+            aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
+            aws configure set aws_session_token $AWS_SESSION_TOKEN
+            aws configure set region $AWS_DEFAULT_REGION
 jobs:
   build-frontend:
     docker:
@@ -199,7 +217,7 @@ jobs:
       - checkout
       - restore_cache:
           keys: [backend-build]
-      - aws_cli_intsall
+      - aws_cli_install
       - aws_configure_credential
       - run:
           name: Run migrations
