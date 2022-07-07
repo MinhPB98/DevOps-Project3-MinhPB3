@@ -268,7 +268,8 @@ jobs:
     steps:
       - checkout
       - add_ssh_keys:
-          - "17:b7:5d:ed:eb:d7:26:cd:96:36:2d:2f:06:42:cc:af"
+          fingerprints:
+            - "17:b7:5d:ed:eb:d7:26:cd:96:36:2d:2f:06:42:cc:af"
       - run:
           name: Install independencies
           command: |
