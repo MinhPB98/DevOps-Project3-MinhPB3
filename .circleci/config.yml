@@ -336,7 +336,6 @@ jobs:
     steps:
       - checkout
       - aws_configure_credential
-      - aws_cli_install
       - run:
           name: Update cloudfront distribution
           command: |
