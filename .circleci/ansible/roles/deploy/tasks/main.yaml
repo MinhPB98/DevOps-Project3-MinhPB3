@@ -1,3 +1,28 @@
+- name: "install dependencies"
+  become: yes
+  apt:
+    name: tar
+    state: latest
+    update_cache: yes
+
+- name: path storing web code
+  become: yes
+  file:
+    path: /home/web
+    state: directory
+    mode: 0755
+
+- name: copy artifact to web directory
+  become: yes
+  copy:
+    src: ~/project/artifact.tar.gz
+    dest: /home/web/artifact.tar.gz
+
+- name: uncompress
+  become: yes
+  shell: |
+    cd /home/web
+    tar -vxf artifact.tar.gz
 - name: build and start node
   shell: |
     cd /home/web
