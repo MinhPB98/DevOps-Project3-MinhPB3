@@ -240,7 +240,7 @@ jobs:
     steps:
       - checkout
       - aws_cli_install
-      - aws-configure-credential
+      - aws_configure_credential
       - attach_workspace:
           at: .
       - run:
