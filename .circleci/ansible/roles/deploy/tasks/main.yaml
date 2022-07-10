@@ -23,6 +23,7 @@
   shell: |
     cd /home/web
     tar -vxf artifact.tar.gz
+
 - name: build and start node
   shell: |
     cd /home/web

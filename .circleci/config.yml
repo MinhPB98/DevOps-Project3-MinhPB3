@@ -2,6 +2,7 @@ version: 2.1
 
 orbs:
   slack: circleci/slack@4.1
+
 commands:
   destroy-environment:
     description: Destroy back-end and front-end cloudformation stacks given a workflow ID.
@@ -69,21 +70,28 @@ jobs:
   build-backend:
     docker:
       - image: circleci/node:13.8.0
+      - image: cimg/postgres:14.0
+        environment:
+          POSTGRES_USER: postgres
+          POSTGRES_DB: postgres
+          POSTGRES_PASSWORD: mypassword
     steps:
       - checkout
       - restore_cache:
           keys: [backend-build]
+      - setup_remote_docker:
+          version: 20.10.14
       - run:
-          name: Back-end build
+          name: Build back-end
           command: |
+            # code here
+            echo $TYPEORM_ENTITIES
             cd backend
-            npm run build
+            npm install
+            npm run start&
       - save_cache:
           paths: [backend/node_modules]
           key: backend-build
-      - slack/notify:
-          event: fail
-          template: basic_fail_1
 
   test-frontend:
     docker:
@@ -147,8 +155,9 @@ jobs:
       - image: amazon/aws-cli
     steps:
       - checkout
+      - aws_configure_credential
       - run:
-          name: isntall tar
+          name: install tar
           command: |
             yum install -y tar gzip
       - run:
